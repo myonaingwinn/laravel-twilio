@@ -2,7 +2,7 @@
 - Clone this repository `git clone https://github.com/myonaingwinn/laravel-twilio.git`.
 
 ## Configuration
-- Run `cp .env.example .env && php artisan key:generate`.
+- Run `cp .env.example .env && php artisan key:generate && composer install`.
 - Enter your twilio account info in that *.env* file.
 
 ## Run
