@@ -28,4 +28,6 @@ Route::prefix('v1')->group(function () {
     Route::post('token', [RoomController::class, 'getToken']);
 
     Route::post('/register', [UserController::class, 'store']);
+
+    Route::post('/login', [UserController::class, 'login']);
 });
