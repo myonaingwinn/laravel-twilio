@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Twilio\Jwt\AccessToken;
 use Twilio\Jwt\Grants\VideoGrant;
+use Illuminate\Support\Facades\Validator;
 
 class RoomController extends Controller
 {
@@ -20,9 +21,14 @@ class RoomController extends Controller
 
     public function getToken(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [ 
             'roomName' => 'required|max:255',
+            'identity' => 'required|max:255',
         ]);
+      
+        if ($validator->fails()) {
+          return response()->json($validator->errors(), 422);
+        }
 
         $identity = uniqid();
         $token = new AccessToken(
