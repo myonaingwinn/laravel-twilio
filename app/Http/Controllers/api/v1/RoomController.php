@@ -20,6 +20,11 @@ class RoomController extends Controller
 
     public function getToken(Request $request)
     {
+        $request->validate([
+            'identity' => 'required|max:255',
+            'room' => 'required|max:255',
+        ]);
+
         $identity = $request->identity;
         $token = new AccessToken(
             $this->sid,
