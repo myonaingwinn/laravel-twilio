@@ -20,11 +20,7 @@ class RoomController extends Controller
 
     public function getToken(Request $request)
     {
-        $request->validate([
-            'roomName' => 'required|max:255',
-        ]);
-
-        $identity = uniqid();
+        $identity = $request->identity;
         $token = new AccessToken(
             $this->sid,
             $this->apiKey,
@@ -34,9 +30,9 @@ class RoomController extends Controller
         );
 
         $grant = new VideoGrant();
-        $grant->setRoom($request->roomName);
+        $grant->setRoom($request->room);
         $token->addGrant($grant);
 
-        return $token->toJWT();
+        return ['token' => $token->toJWT()];
     }
 }
