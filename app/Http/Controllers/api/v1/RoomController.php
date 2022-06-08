@@ -21,14 +21,14 @@ class RoomController extends Controller
 
     public function getToken(Request $request)
     {
-        $validator = Validator::make($request->all(), [ 
+        $validator = Validator::make($request->all(), [
             'room' => 'required|max:255',
             'identity' => 'required|max:255',
 
         ]);
-      
+
         if ($validator->fails()) {
-          return response()->json($validator->errors(), 422);
+            return response()->json($validator->errors(), 422);
         }
 
         $identity = $request->identity;
