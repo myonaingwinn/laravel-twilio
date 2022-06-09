@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import Video from "twilio-video";
-import Lobby from "./Lobby";
+import JoinRoom from "./JoinRoom";
 import Room from "./Room";
 
 const VideoChat = () => {
@@ -84,7 +84,7 @@ const VideoChat = () => {
         );
     } else {
         render = (
-            <Lobby
+            <JoinRoom
                 username={username}
                 roomName={roomName}
                 handleUsernameChange={handleUsernameChange}

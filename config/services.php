@@ -32,8 +32,10 @@ return [
 
     'twilio' => [
         'sid' => env('TWILIO_ACCOUNT_SID'),
+        'auth_token' => env('TWILIO_AUTH_TOKEN'),
         'api_key' => env('TWILIO_API_KEY'),
         'api_secret' => env('TWILIO_API_SECRET'),
+        'conversation_service_id' => env('TWILIO_CONVERSATIONS_SERVICE_SID'),
     ]
 
 ];
