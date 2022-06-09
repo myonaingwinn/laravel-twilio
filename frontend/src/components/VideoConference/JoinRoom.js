@@ -15,7 +15,7 @@ const JoinRoom = ({
             <Col lg={6}>
                 <Form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3">
-                        <h2>Create or join a room</h2>
+                        <h2>Join the room</h2>
                         <Form.Label htmlFor="name">Name:</Form.Label>
                         <Form.Control
                             type="text"
