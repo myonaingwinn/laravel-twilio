@@ -1,4 +1,3 @@
-import "./App.css";
 import VideoChat from "./components/VideoConference/VideoChat";
 import { Container } from "react-bootstrap";
 
