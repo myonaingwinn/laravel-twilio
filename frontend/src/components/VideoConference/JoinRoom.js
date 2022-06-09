@@ -10,8 +10,7 @@ const JoinRoom = ({
     connecting,
 }) => {
     return (
-        <Row>
-            <Col></Col>
+        <Row className="d-flex justify-content-center">
             <Col lg={6}>
                 <Form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3">
@@ -46,7 +45,6 @@ const JoinRoom = ({
                     </Button>
                 </Form>
             </Col>
-            <Col></Col>
         </Row>
     );
 };
