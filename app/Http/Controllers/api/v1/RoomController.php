@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Twilio\Jwt\AccessToken;
 use Twilio\Jwt\Grants\VideoGrant;
 use Illuminate\Support\Facades\Validator;
+use Twilio\Rest\Client;
 
 class RoomController extends Controller
 {
@@ -31,6 +32,17 @@ class RoomController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
+        $sid = getenv("TWILIO_ACCOUNT_SID");
+        $token = getenv("TWILIO_AUTH_TOKEN");
+        $twilio = new Client($sid, $token);
+
+        $twilio->video->v1->rooms
+            ->create(
+                [
+                    "uniqueName" => $request->room,
+                ]
+            );
+
         $identity = $request->identity;
         $token = new AccessToken(
             $this->sid,
@@ -45,5 +57,25 @@ class RoomController extends Controller
         $token->addGrant($grant);
 
         return ['token' => $token->toJWT()];
+    }
+
+    public function room_list()
+    {
+        $sid = getenv("TWILIO_ACCOUNT_SID");
+        $token = getenv("TWILIO_AUTH_TOKEN");
+        $twilio = new Client($sid, $token);
+
+        $rooms = $twilio->video->v1->rooms
+            ->read(["status" => "completed"]);
+
+        foreach ($rooms as $record) {
+            $name[] = $record->uniqueName;
+            $id[] = $record->sid;
+        }
+
+        return response()->json([
+            "sid" => $id,
+            "roomName" => $name,
+        ]);
     }
 }

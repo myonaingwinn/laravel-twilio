@@ -30,4 +30,6 @@ Route::prefix('v1')->group(function () {
     Route::post('/register', [UserController::class, 'store']);
 
     Route::post('/login', [UserController::class, 'login']);
+
+    Route::get('/room', [RoomController::class, 'room_list']);
 });
