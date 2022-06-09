@@ -1,11 +1,12 @@
 import "./App.css";
 import VideoChat from "./components/VideoConference/VideoChat";
+import { Container } from "react-bootstrap";
 
 function App() {
     return (
-        <div className="App">
+        <Container>
             <VideoChat />
-        </div>
+        </Container>
     );
 }
 
