@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 import Video from "twilio-video";
 import JoinRoom from "./JoinRoom";
 import Room from "./Room";
