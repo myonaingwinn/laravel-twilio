@@ -11,11 +11,12 @@ use Twilio\Rest\Client;
 
 class RoomController extends Controller
 {
-    private $sid, $apiKey, $apiSecret;
+    private $sid, $apiKey, $apiSecret, $auth_token;
 
     public function __construct()
     {
         $this->sid = config('services.twilio.sid');
+        $this->auth_token = config('services.twilio.auth_token');
         $this->apiKey = config('services.twilio.api_key');
         $this->apiSecret = config('services.twilio.api_secret');
     }
@@ -32,16 +33,11 @@ class RoomController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        $sid = getenv("TWILIO_ACCOUNT_SID");
-        $token = getenv("TWILIO_AUTH_TOKEN");
-        $twilio = new Client($sid, $token);
+        $twilio = new Client($this->sid, $this->auth_token);
 
-        $twilio->video->v1->rooms
-            ->create(
-                [
-                    "uniqueName" => $request->room,
-                ]
-            );
+        $twilio->video->v1->rooms->create([
+            "uniqueName" => $request->room,
+        ]);
 
         $identity = $request->identity;
         $token = new AccessToken(
@@ -59,7 +55,7 @@ class RoomController extends Controller
         return ['token' => $token->toJWT()];
     }
 
-    public function room_list()
+    public function getRoomList()
     {
         $sid = getenv("TWILIO_ACCOUNT_SID");
         $token = getenv("TWILIO_AUTH_TOKEN");

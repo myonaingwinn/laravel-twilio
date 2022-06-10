@@ -31,5 +31,5 @@ Route::prefix('v1')->group(function () {
 
     Route::post('/login', [UserController::class, 'login']);
 
-    Route::get('/room', [RoomController::class, 'room_list']);
+    Route::get('/get_room_list', [RoomController::class, 'getRoomList']);
 });
