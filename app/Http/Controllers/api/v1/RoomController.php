@@ -57,9 +57,7 @@ class RoomController extends Controller
 
     public function getRoomList()
     {
-        $sid = getenv("TWILIO_ACCOUNT_SID");
-        $token = getenv("TWILIO_AUTH_TOKEN");
-        $twilio = new Client($sid, $token);
+        $twilio = new Client($this->sid, $this->auth_token);
 
         $rooms = $twilio->video->v1->rooms
             ->read(["status" => "completed"]);
