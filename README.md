@@ -1,9 +1,12 @@
 ## Installation
 - Clone this repository `git clone https://github.com/myonaingwinn/laravel-twilio.git`.
+- Run `composer install`.
+- Run `cd frontend && npm install`.
 
 ## Configuration
-- Run `cp .env.example .env && php artisan key:generate && composer install`.
+- Run `cp .env.example .env && php artisan key:generate`.
 - Enter your twilio account info in that *.env* file.
 
 ## Run
-- with `php artisan serve`.
+- Frontend - `cd frontend && npm start`.
+- Backend - `php artisan serve`.
