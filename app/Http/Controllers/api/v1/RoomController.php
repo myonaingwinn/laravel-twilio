@@ -8,6 +8,7 @@ use Twilio\Jwt\AccessToken;
 use Twilio\Jwt\Grants\VideoGrant;
 use Illuminate\Support\Facades\Validator;
 use Twilio\Rest\Client;
+use App\Http\Controllers\api\v1\CustomObject\RoomData;
 
 class RoomController extends Controller
 {
@@ -59,17 +60,9 @@ class RoomController extends Controller
     {
         $twilio = new Client($this->sid, $this->authToken);
 
-        $rooms = $twilio->video->v1->rooms
-            ->read(["status" => "completed"]);
+        $obj = new RoomData();
+        $rooms_arr = $obj->getRoomData($twilio);
 
-        foreach ($rooms as $record) {
-            $name[] = $record->uniqueName;
-            $id[] = $record->sid;
-        }
-
-        return response()->json([
-            "sid" => $id,
-            "roomName" => $name,
-        ]);
+        return response()->json(["Room Data" => $rooms_arr], 200);
     }
 }
