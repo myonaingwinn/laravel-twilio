@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Participant from "./Participant";
+import Navbar from "../Navbar/Navbar";
 
 const Room = ({ roomName, room, handleLeave }) => {
     const [participants, setParticipants] = useState([]);
@@ -28,25 +29,23 @@ const Room = ({ roomName, room, handleLeave }) => {
     }, [room]);
 
     const remoteParticipants = participants.map((participant) => (
-        <Participant key={participant.sid} participant={participant} />
+        <Participant
+            key={participant.sid}
+            participant={participant}
+            local={false}
+        />
     ));
 
     return (
-        <div className="room">
-            <h2>Room: {roomName}</h2>
-            <button onClick={handleLeave}>Leave</button>
-            <div className="local-participant">
-                {room ? (
-                    <Participant
-                        key={room.localParticipant.sid}
-                        participant={room.localParticipant}
-                    />
-                ) : (
-                    ""
-                )}
-            </div>
-            <h3>Remote Participants</h3>
-            <div className="remote-participants">{remoteParticipants}</div>
+        <div className="d-flex align-content-center flex-wrap">
+            {remoteParticipants}
+            <Participant
+                key={room.localParticipant.sid}
+                participant={room.localParticipant}
+                local={true}
+            />
+
+            <Navbar roomName={roomName} room={room} handleLeave={handleLeave} />
         </div>
     );
 };

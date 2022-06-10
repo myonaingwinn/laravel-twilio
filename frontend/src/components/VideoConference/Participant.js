@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
+import { Card } from "react-bootstrap";
 
-const Participant = ({ participant }) => {
+const Participant = ({ participant, local }) => {
     const [videoTracks, setVideoTracks] = useState([]);
     const [audioTracks, setAudioTracks] = useState([]);
 
@@ -67,11 +68,20 @@ const Participant = ({ participant }) => {
     }, [audioTracks]);
 
     return (
-        <div className="participant">
-            <h3>{participant.identity}</h3>
-            <video ref={videoRef} autoPlay={true} />
-            <audio ref={audioRef} autoPlay={true} muted={true} />
-        </div>
+        <Card className="m-1">
+            <Card.Header>
+                {participant.identity} {local && " (You)"}
+            </Card.Header>
+            <Card.Body>
+                <video
+                    ref={videoRef}
+                    autoPlay={true}
+                    className={local && "local"}
+                    style={{ width: "100%", maxWidth: "432px" }}
+                />
+                <audio ref={audioRef} autoPlay={true} muted={true} />
+            </Card.Body>
+        </Card>
     );
 };
 

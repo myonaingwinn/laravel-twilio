@@ -1,5 +1,5 @@
 import VideoChat from "./components/VideoConference/VideoChat";
-import { Button, Container, Nav, Navbar } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 
 function App() {
     let isLoggedIn = true;
@@ -8,21 +8,7 @@ function App() {
     isLoggedIn
         ? (component = (
               <>
-                  <Navbar variant="light" className="shadow p-3 mb-5 bg-light">
-                      <Container fluid>
-                          <Navbar.Brand href="/">Laravel & Twilio</Navbar.Brand>
-                          <Nav>
-                              <Nav.Link href="#features">Features</Nav.Link>
-                              <Button
-                                  variant="light"
-                                  className="btn btn-outline-danger"
-                              >
-                                  Logout
-                              </Button>
-                          </Nav>
-                      </Container>
-                  </Navbar>
-                  <Container>
+                  <Container fluid>
                       <VideoChat />
                   </Container>
               </>
