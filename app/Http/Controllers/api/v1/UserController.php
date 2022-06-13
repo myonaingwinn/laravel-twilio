@@ -39,10 +39,9 @@ class UserController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-
-            return 'success login';
+            return response()->json('Login successful', 200);
         } else {
-            return 'invalid email or password';
+            return response()->json('Invalid email or password', 400);
         }
     }
 
