@@ -27,7 +27,6 @@ class RoomController extends Controller
         $validator = Validator::make($request->all(), [
             'room' => 'required|max:255',
             'identity' => 'required|max:255',
-
         ]);
 
         if ($validator->fails()) {
@@ -38,6 +37,9 @@ class RoomController extends Controller
 
         $twilio->video->v1->rooms->create([
             "uniqueName" => $request->room,
+            "type" => $request->type,
+            "MaxParticipants" => $request->participant_number,
+            "statusCallback" => $request->description,
         ]);
 
         $identity = $request->identity;
@@ -61,8 +63,8 @@ class RoomController extends Controller
         $twilio = new Client($this->sid, $this->authToken);
 
         $obj = new RoomData();
-        $rooms_arr = $obj->getRoomData($twilio);
+        $roomsArr = $obj->getRoomData($twilio);
 
-        return response()->json(["Room Data" => $rooms_arr], 200);
+        return response()->json(["Room Data" => $roomsArr], 200);
     }
 }
