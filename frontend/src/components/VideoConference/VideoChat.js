@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from "react";
 import Video from "twilio-video";
+import { baseUrl } from "../../Utilities";
 import JoinRoom from "./JoinRoom";
 import Room from "./Room";
 
@@ -21,7 +22,7 @@ const VideoChat = () => {
         async (event) => {
             event.preventDefault();
             setConnecting(true);
-            const data = await fetch("http://127.0.0.1:8000/api/v1/token", {
+            const data = await fetch(baseUrl + "/token", {
                 method: "POST",
                 body: JSON.stringify({
                     identity: username,

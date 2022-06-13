@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
+import { baseUrl } from "../../Utilities";
 
 const Login = ({ handleLogin }) => {
     const [email, setEmail] = useState("");
@@ -16,7 +17,7 @@ const Login = ({ handleLogin }) => {
 
     const handleSubmit = async () => {
         setConnecting(true);
-        await fetch("http://127.0.0.1:8000/api/v1/login", {
+        await fetch(baseUrl + "/login", {
             method: "POST",
             body: JSON.stringify({
                 email: email,
