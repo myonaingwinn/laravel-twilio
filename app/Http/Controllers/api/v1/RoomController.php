@@ -7,14 +7,17 @@ use Illuminate\Http\Request;
 use Twilio\Jwt\AccessToken;
 use Twilio\Jwt\Grants\VideoGrant;
 use Illuminate\Support\Facades\Validator;
+use Twilio\Rest\Client;
+use App\Http\Controllers\api\v1\CustomObject\RoomData;
 
 class RoomController extends Controller
 {
-    private $sid, $apiKey, $apiSecret;
+    private $sid, $apiKey, $apiSecret, $authToken;
 
     public function __construct()
     {
         $this->sid = config('services.twilio.sid');
+        $this->authToken = config('services.twilio.auth_token');
         $this->apiKey = config('services.twilio.api_key');
         $this->apiSecret = config('services.twilio.api_secret');
     }
@@ -31,6 +34,12 @@ class RoomController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
+        $twilio = new Client($this->sid, $this->authToken);
+
+        $twilio->video->v1->rooms->create([
+            "uniqueName" => $request->room,
+        ]);
+
         $identity = $request->identity;
         $token = new AccessToken(
             $this->sid,
@@ -45,5 +54,15 @@ class RoomController extends Controller
         $token->addGrant($grant);
 
         return ['token' => $token->toJWT()];
+    }
+
+    public function getRoomList()
+    {
+        $twilio = new Client($this->sid, $this->authToken);
+
+        $obj = new RoomData();
+        $rooms_arr = $obj->getRoomData($twilio);
+
+        return response()->json(["Room Data" => $rooms_arr], 200);
     }
 }
