@@ -2,11 +2,11 @@ import { Form, Button, Row, Col, Card } from "react-bootstrap";
 
 const JoinRoom = ({
     username,
-    handleUsernameChange,
     roomName,
+    connecting,
+    handleUsernameChange,
     handleRoomNameChange,
     handleSubmit,
-    connecting,
 }) => {
     return (
         <Row className="d-flex justify-content-center mt-5">
@@ -46,9 +46,9 @@ const JoinRoom = ({
                             type="submit"
                             onClick={handleSubmit}
                             className="btn btn-primary"
-                            disabled={connecting}
+                            disabled={connecting || !(roomName && username)}
                         >
-                            {connecting ? "Connecting" : "Join"}
+                            Join
                         </Button>
                     </Card.Footer>
                 </Card>
