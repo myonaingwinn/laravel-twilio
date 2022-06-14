@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import { baseUrl } from "../../Utilities";
 
-const Login = ({ handleLogin }) => {
+const Login = ({ handleLogin, handleLoading }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [connecting, setConnecting] = useState(false);
@@ -17,6 +17,7 @@ const Login = ({ handleLogin }) => {
 
     const handleSubmit = async () => {
         setConnecting(true);
+        handleLoading();
         await fetch(baseUrl + "/login", {
             method: "POST",
             body: JSON.stringify({
@@ -43,6 +44,7 @@ const Login = ({ handleLogin }) => {
             })
             .catch((err) => console.log(err));
         setConnecting(false);
+        handleLoading();
     };
 
     return (
@@ -88,7 +90,7 @@ const Login = ({ handleLogin }) => {
                                 className="btn btn-primary"
                                 disabled={connecting || !(email && password)}
                             >
-                                {connecting ? "Connecting" : "Login"}
+                                Login
                             </Button>
                         </Card.Footer>
                     </Card>
