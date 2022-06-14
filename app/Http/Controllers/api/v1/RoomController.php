@@ -43,7 +43,6 @@ class RoomController extends Controller
                 "MaxParticipants" => $request->participant_number,
                 "statusCallback" => $request->description,
                 "emptyRoomTimeout" => 1,
-                "maxParticipantDuration" => 60000,
             ]);
 
             $identity = $request->identity;
