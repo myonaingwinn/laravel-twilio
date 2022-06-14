@@ -44,7 +44,6 @@ class UserController extends Controller
             return response()->json([
                 "name" => $data['name'],
                 "email" => $data['email'],
-                "password" => $data['password'],
                 "status" => "Login successful",
                 "code" => 200,
             ]);
