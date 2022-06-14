@@ -36,24 +36,33 @@ class RoomController extends Controller
 
         $twilio = new Client($this->sid, $this->authToken);
 
-        $twilio->video->v1->rooms->create([
-            "uniqueName" => $request->room,
-        ]);
+        try {
+            $twilio->video->v1->rooms->create([
+                "uniqueName" => $request->room,
+                "type" => $request->type,
+                "MaxParticipants" => $request->participant_number,
+                "statusCallback" => $request->description,
+                "emptyRoomTimeout" => 1,
+                "maxParticipantDuration" => 60000,
+            ]);
 
-        $identity = $request->identity;
-        $token = new AccessToken(
-            $this->sid,
-            $this->apiKey,
-            $this->apiSecret,
-            3600,
-            $identity
-        );
+            $identity = $request->identity;
+            $token = new AccessToken(
+                $this->sid,
+                $this->apiKey,
+                $this->apiSecret,
+                3600,
+                $identity
+            );
 
-        $grant = new VideoGrant();
-        $grant->setRoom($request->room);
-        $token->addGrant($grant);
+            $grant = new VideoGrant();
+            $grant->setRoom($request->room);
+            $token->addGrant($grant);
 
-        return ['token' => $token->toJWT()];
+            return ['token' => $token->toJWT()];
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
     }
 
     public function getRoomList()
