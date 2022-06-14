@@ -38,9 +38,13 @@ class UserController extends Controller
 
         $credentials = $request->only('email', 'password');
 
+        $data = User::where('email', $credentials['email'])->first();
+
         if (Auth::attempt($credentials)) {
             return response()->json([
-                "data" => $credentials,
+                "name" => $data['name'],
+                "email" => $data['email'],
+                "password" => $data['password'],
                 "status" => "Login successful",
                 "code" => 200,
             ]);
