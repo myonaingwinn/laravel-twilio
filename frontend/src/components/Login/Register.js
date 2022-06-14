@@ -1,14 +1,13 @@
-import React, { useState, useCallback, useEffect } from "react";
-import { Form, Button } from "react-bootstrap";
+import React, { useState } from "react";
+import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import { baseUrl } from "../../Utilities";
 
-export const SignUp = () => {
+export const Register = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
-    const handleSubmit = useCallback(async (event) => {
-        event.preventDefault();
+   
+    const handleSubmit = async () => {
         await fetch(baseUrl + "/register", {
             method: "POST",
             body: JSON.stringify({
@@ -23,61 +22,76 @@ export const SignUp = () => {
             console.log(res);
             return res;
         });
-    });
+    };
 
-    const handleNameChange = useCallback((event) => {
-        setName(event.target.value);
-    }, []);
+    const handleNameChange = (e) => {
+        setName(e.target.value);
+    };
 
-    const handleEmailChange = useCallback((event) => {
-        setEmail(event.target.value);
-    }, []);
+    const handleEmailChange = (e) => {
+        setEmail(e.target.value);
+    };
 
-    const handlePasswordChange = useCallback((event) => {
-        setPassword(event.target.value);
-    }, []);
+    const handlePasswordChange = (e) => {
+        setPassword(e.target.value);
+    };
 
     return (
-        <Form>
-            <Form.Group className="mb-3">
-                <h2>Register</h2>
-                <Form.Label htmlFor="name">Name</Form.Label>
-                <Form.Control
-                    type="text"
-                    id="name"
-                    value={name}
-                    onChange={handleNameChange}
-                    required
-                />
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Label htmlFor="email">Email</Form.Label>
-                <Form.Control
-                    type="text"
-                    id="email"
-                    value={email}
-                    onChange={handleEmailChange}
-                    required
-                />
-            </Form.Group>
-            <Form.Group className="mb-3">
-                <Form.Label htmlFor="pwd">Password</Form.Label>
-                <Form.Control
-                    type="password"
-                    id="pwd"
-                    value={password}
-                    onChange={handlePasswordChange}
-                    required
-                />
-            </Form.Group>
-            <Button
-                onClick={handleSubmit}
-                type="submit"
-                className="btn btn-primary"
-            >
-                Register
-            </Button>
-        </Form>
+      <Row className="d-flex justify-content-center mt-5">
+      <Col lg={5}>
+          <Card className="mt-5 shadow-sm">
+              <Card.Header>
+                  <p className="h2">Register</p>
+              </Card.Header>
+              <Card.Body>
+                  <Form.Group className="mb-3">
+                      <Form.Label htmlFor="name">Name</Form.Label>
+                      <Form.Control
+                          type="text"
+                          id="name"
+                          value={name}
+                          onChange={handleNameChange}
+                          placeholder="Enter your Name"
+                          required
+                      />
+                  </Form.Group>
+                  <Form.Group className="mb-3">
+                      <Form.Label htmlFor="email">Email</Form.Label>
+                      <Form.Control
+                          type="email"
+                          id="email"
+                          value={email}
+                          onChange={handleEmailChange}
+                          placeholder="Enter your email"
+                          required
+                      />
+                  </Form.Group>
+                  <Form.Group className="mb-3">
+                      <Form.Label htmlFor="password">
+                          Password
+                      </Form.Label>
+                      <Form.Control
+                          type="password"
+                          id="password"
+                          value={password}
+                          onChange={handlePasswordChange}
+                          placeholder="Enter your password"
+                          required
+                      />
+                  </Form.Group>
+              </Card.Body>
+              <Card.Footer>
+                  <Button
+                      type="submit"
+                      onClick={handleSubmit}
+                      className="btn btn-primary"
+                  >
+                      Register
+                  </Button>
+              </Card.Footer>
+          </Card>
+      </Col>
+  </Row>
     );
 };
-export default SignUp;
+export default Register;
