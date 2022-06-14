@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
+import { baseUrl } from "../../Utilities";
 
 export const SignUp = () => {
     const [name, setName] = useState("");
@@ -8,7 +9,7 @@ export const SignUp = () => {
 
     const handleSubmit = useCallback(async (event) => {
         event.preventDefault();
-        const data = await fetch("http://127.0.0.1:8000/api/v1/register", {
+        await fetch(baseUrl + "/register", {
             method: "POST",
             body: JSON.stringify({
                 name,
@@ -40,7 +41,7 @@ export const SignUp = () => {
         <Form>
             <Form.Group className="mb-3">
                 <h2>Register</h2>
-                <Form.Label htmlFor="name">Name:</Form.Label>
+                <Form.Label htmlFor="name">Name</Form.Label>
                 <Form.Control
                     type="text"
                     id="name"
@@ -50,7 +51,7 @@ export const SignUp = () => {
                 />
             </Form.Group>
             <Form.Group className="mb-3">
-                <Form.Label htmlFor="email">Email:</Form.Label>
+                <Form.Label htmlFor="email">Email</Form.Label>
                 <Form.Control
                     type="text"
                     id="email"
@@ -60,7 +61,7 @@ export const SignUp = () => {
                 />
             </Form.Group>
             <Form.Group className="mb-3">
-                <Form.Label htmlFor="pwd">Password:</Form.Label>
+                <Form.Label htmlFor="pwd">Password</Form.Label>
                 <Form.Control
                     type="password"
                     id="pwd"
