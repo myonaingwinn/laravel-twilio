@@ -39,8 +39,8 @@ class RoomController extends Controller
         try {
             $twilio->video->v1->rooms->create([
                 "uniqueName" => $request->room,
-                "type" => $request->type,
-                "MaxParticipants" => $request->participant_number,
+                "type" => $request->type ?: 'group',
+                "MaxParticipants" => $request->participant_number ?: '50',
                 "statusCallback" => $request->description,
                 "emptyRoomTimeout" => 1,
             ]);
