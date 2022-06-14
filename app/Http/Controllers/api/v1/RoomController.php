@@ -45,7 +45,7 @@ class RoomController extends Controller
                 "emptyRoomTimeout" => (empty($request->empty_room_timeout)) ? '1' : $request->empty_room_timeout,
             ]);
         } catch (\Exception $e) {
-            return $e->getMessage();
+            echo $e->getMessage();
         }
         $identity = $request->identity;
         $token = new AccessToken(

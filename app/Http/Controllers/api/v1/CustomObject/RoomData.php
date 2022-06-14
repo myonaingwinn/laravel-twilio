@@ -18,7 +18,7 @@ class RoomData
             $record->maxParticipant = $record->maxParticipants;
             $record->type = $record->type;
             $record->description = $record->statusCallback;
-            $record->empty_room_timeout = $record->emptyRoomTimeout;
+            $record->emptyRoomTimeout = $record->emptyRoomTimeout;
         }
 
         $result = (array('Room List' => $rooms));
