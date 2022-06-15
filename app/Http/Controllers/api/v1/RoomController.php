@@ -39,10 +39,10 @@ class RoomController extends Controller
         try {
             $twilio->video->v1->rooms->create([
                 "uniqueName" => $request->room,
-                "type" => (empty($request->type)) ? 'group' : $request->type,
-                "MaxParticipants" => (empty($request->participantNumber)) ? '50' : $request->participant_number,
+                "type" => (empty($request->roomType)) ? 'group' : $request->roomType,
+                "MaxParticipants" => (empty($request->maxParticipants)) ? '50' : $request->maxParticipants,
                 "statusCallback" => (empty($request->description)) ? 'null' : $request->description,
-                "emptyRoomTimeout" => (empty($request->empty_room_timeout)) ? '1' : $request->empty_room_timeout,
+                "emptyRoomTimeout" => (empty($request->emptyRoomTimeout)) ? '1' : $request->emptyRoomTimeout,
             ]);
         } catch (\Exception $e) {
             echo $e->getMessage();

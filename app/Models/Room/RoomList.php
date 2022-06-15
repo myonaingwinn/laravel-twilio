@@ -7,7 +7,7 @@ class RoomList
     public function getRoomData($twilio)
     {
         $rooms = (array) $twilio->video->v1->rooms
-            ->read(["status" => "in-progress"]);
+            ->read(["status" => "in-progress"], 10);
 
         foreach ($rooms as $record) {
             $participant[] = $record->participants;
@@ -16,13 +16,11 @@ class RoomList
             $record->id = $record->sid;
             $record->participant = count($participant);
             $record->maxParticipant = $record->maxParticipants;
-            $record->type = $record->type;
+            $record->roomType = $record->type;
             $record->description = $record->statusCallback;
             $record->emptyRoomTimeout = $record->emptyRoomTimeout;
         }
 
-        $result = $rooms;
-
-        return $result;
+        return $rooms;
     }
 }
