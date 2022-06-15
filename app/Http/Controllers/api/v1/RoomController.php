@@ -7,7 +7,7 @@ use Twilio\Jwt\AccessToken;
 use Twilio\Jwt\Grants\VideoGrant;
 use Twilio\Rest\Client;
 use App\Models\Room\RoomList;
-use App\Http\Requests\RoomPostRequest;
+use App\Http\Requests\TokenRequest;
 
 class RoomController extends Controller
 {
@@ -21,7 +21,7 @@ class RoomController extends Controller
         $this->apiSecret = config('services.twilio.api_secret');
     }
 
-    public function getToken(RoomPostRequest $request)
+    public function getToken(TokenRequest $request)
     {
         $twilio = new Client($this->sid, $this->authToken);
 

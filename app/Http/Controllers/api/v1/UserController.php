@@ -5,12 +5,12 @@ namespace App\Http\Controllers\api\v1;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\RegisterPostRequest;
-use App\Http\Requests\LoginPostRequest;
+use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\LoginRequest;
 
 class UserController extends Controller
 {
-    public function login(LoginPostRequest $request)
+    public function login(LoginRequest $request)
     {
         $credentials = $request->only('email', 'password');
 
@@ -25,7 +25,7 @@ class UserController extends Controller
         }
     }
 
-    public function register(RegisterPostRequest $request)
+    public function register(RegisterRequest $request)
     {
         User::create([
             'name' => $request->get('name'),
