@@ -1,6 +1,6 @@
 ### Issue No
 
--   #number
+-   resolve #number
 
 ### Before Running This PR
 
