@@ -10,11 +10,11 @@ class RoomList
             ->read(["status" => "in-progress"], 10);
 
         foreach ($rooms as $record) {
-            $participant[] = $record->participants;
+            $totalParticipant[] = $record->participants;
 
             $record->name = $record->uniqueName;
             $record->id = $record->sid;
-            $record->participant = count($participant);
+            $record->totalParticipant = count($totalParticipant);
             $record->maxParticipant = $record->maxParticipants;
             $record->roomType = $record->type;
             $record->description = $record->statusCallback;
