@@ -3,12 +3,11 @@
 namespace App\Http\Controllers\api\v1;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Twilio\Jwt\AccessToken;
 use Twilio\Jwt\Grants\VideoGrant;
-use Illuminate\Support\Facades\Validator;
 use Twilio\Rest\Client;
 use App\Models\Room\RoomList;
+use App\Http\Requests\RoomPostRequest;
 
 class RoomController extends Controller
 {
@@ -22,18 +21,8 @@ class RoomController extends Controller
         $this->apiSecret = config('services.twilio.api_secret');
     }
 
-    public function getToken(Request $request)
+    public function getToken(RoomPostRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'room' => 'required|max:255',
-            'identity' => 'required|max:255',
-
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
         $twilio = new Client($this->sid, $this->authToken);
 
         try {
