@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\api\v1\CustomObject;
+namespace App\Models\Room;
 
-class RoomData
+class RoomList
 {
     public function getRoomData($twilio)
     {
         $rooms = (array) $twilio->video->v1->rooms
-            ->read(["status" => "in-progress"]);
+            ->read(["status" => "completed"]);
 
         foreach ($rooms as $record) {
             $participant[] = $record->participants;
@@ -21,7 +21,7 @@ class RoomData
             $record->emptyRoomTimeout = $record->emptyRoomTimeout;
         }
 
-        $result = (array('Room List' => $rooms));
+        $result = $rooms;
 
         return $result;
     }

@@ -8,7 +8,7 @@ use Twilio\Jwt\AccessToken;
 use Twilio\Jwt\Grants\VideoGrant;
 use Illuminate\Support\Facades\Validator;
 use Twilio\Rest\Client;
-use App\Http\Controllers\api\v1\CustomObject\RoomData;
+use App\Models\Room\RoomList;
 
 class RoomController extends Controller
 {
@@ -40,7 +40,7 @@ class RoomController extends Controller
             $twilio->video->v1->rooms->create([
                 "uniqueName" => $request->room,
                 "type" => (empty($request->type)) ? 'group' : $request->type,
-                "MaxParticipants" => (empty($request->participant_number)) ? '50' : $request->participant_number,
+                "MaxParticipants" => (empty($request->participantNumber)) ? '50' : $request->participant_number,
                 "statusCallback" => (empty($request->description)) ? 'null' : $request->description,
                 "emptyRoomTimeout" => (empty($request->empty_room_timeout)) ? '1' : $request->empty_room_timeout,
             ]);
@@ -67,9 +67,9 @@ class RoomController extends Controller
     {
         $twilio = new Client($this->sid, $this->authToken);
 
-        $obj = new RoomData();
-        $rooms_arr = $obj->getRoomData($twilio);
+        $obj = new RoomList();
+        $roomList = $obj->getRoomData($twilio);
 
-        return response()->json(["Room Data" => $rooms_arr], 200);
+        return response()->json(["roomList" => $roomList], 200);
     }
 }
