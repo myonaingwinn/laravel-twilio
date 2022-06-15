@@ -73,7 +73,7 @@ class UserController extends Controller
             'password' => bcrypt($request->get('password')),
         ]);
 
-        return response()->json('Register Successful!', 200);
+        return response()->json('Register Successful', 200);
     }
 
     /**
