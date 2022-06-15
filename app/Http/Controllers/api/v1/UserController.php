@@ -38,8 +38,12 @@ class UserController extends Controller
 
         $credentials = $request->only('email', 'password');
 
+        $user = User::where('email', $credentials['email'])->first();
+
         if (Auth::attempt($credentials)) {
-            return response()->json('Login successful', 200);
+            return response()->json([
+                "user" => $user,
+            ], 200);
         } else {
             return response()->json('Invalid email or password', 400);
         }
@@ -69,7 +73,7 @@ class UserController extends Controller
             'password' => bcrypt($request->get('password')),
         ]);
 
-        return 'creating user success...';
+        return response()->json('Register Successful', 200);
     }
 
     /**
