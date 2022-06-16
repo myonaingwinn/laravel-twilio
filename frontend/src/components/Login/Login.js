@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
 import { baseUrl } from "../../Utilities";
-import Notification from "../notification/Notification";
+import Notification from "../Notification/Notification";
 
 const Login = ({ handleLogin, handleLoading }) => {
     const [email, setEmail] = useState("");
