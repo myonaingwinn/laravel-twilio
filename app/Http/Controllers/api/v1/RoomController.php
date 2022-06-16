@@ -50,7 +50,7 @@ class RoomController extends Controller
                 echo "Room Created with group type!";
             }
         } catch (\Exception $e) {
-            return $e->getMessage();
+            echo $e->getMessage();
         }
 
         $identity = $request->identity;
