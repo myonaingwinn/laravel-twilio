@@ -8,7 +8,7 @@ use Twilio\Jwt\Grants\VideoGrant;
 use Twilio\Rest\Client;
 use App\Models\Room\RoomList;
 use App\Http\Requests\TokenRequest;
-use App\Http\Requests\TokenRequest as createRoom;
+use App\Http\Requests\TokenRequest as CreateRoomRequest;
 
 class RoomController extends Controller
 {
@@ -40,7 +40,7 @@ class RoomController extends Controller
         return ['token' => $token->toJWT()];
     }
 
-    public function createRoom(createRoom $request)
+    public function createRoom(CreateRoomRequest $request)
     {
         $twilio = new Client($this->sid, $this->authToken);
 
