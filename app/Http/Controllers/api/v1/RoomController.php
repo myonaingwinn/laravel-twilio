@@ -28,7 +28,7 @@ class RoomController extends Controller
         try {
             if ($request->roomType == "peer-to-peer") {
                 if ($request->maxParticipants > 10) {
-                    echo "Max Participant number cannot be grater than 10 in Peer-to-Peer Room Type";
+                    return response()->json('Max Participant number cannot be grater than 10 in Peer-to-Peer Room Type', 400);
                 } else {
                     $twilio->video->v1->rooms->create([
                         "uniqueName" => $request->room,
