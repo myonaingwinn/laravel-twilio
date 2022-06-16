@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
-import { baseUrl } from "../../Utilities";
+import { baseUrl, localStorageRemove, localStorageSet } from "../../Utilities";
 import Notification from "../Notification/Notification";
 
 const Login = ({ handleLogin, handleLoading }) => {
@@ -38,14 +38,17 @@ const Login = ({ handleLogin, handleLoading }) => {
         })
             .then((res) => {
                 res.ok === true
-                    ? localStorage.setItem("isLoggedIn", true)
-                    : localStorage.removeItem("isLoggedIn");
+                    ? localStorageSet("isLoggedIn", true)
+                    : localStorageRemove("isLoggedIn");
 
                 setSuccessOrError(res.ok);
                 handleLogin();
                 return res.json();
             })
             .catch((err) => console.log(err));
+
+        if (body.id) localStorageSet("user", body);
+        else localStorageRemove("user");
 
         if (typeof body === typeof {}) {
             if (body.errors) setMsgBody(body.errors.email[0]);
