@@ -2,7 +2,7 @@ import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { Toast, ToastContainer } from "react-bootstrap";
 import { CheckCircleFillIcon, XCircleFillIcon } from "@primer/octicons-react";
 
-const AlertMessage = forwardRef((props, ref) => {
+const Notification = forwardRef((props, ref) => {
     const [showMsg, setShowMsg] = useState(false);
 
     useImperativeHandle(ref, () => ({
@@ -10,8 +10,6 @@ const AlertMessage = forwardRef((props, ref) => {
     }));
 
     const handleShowMsg = () => setShowMsg(!showMsg);
-
-    console.log("AlertMessage : ", props);
 
     return (
         <>
@@ -38,4 +36,4 @@ const AlertMessage = forwardRef((props, ref) => {
     );
 });
 
-export default AlertMessage;
+export default Notification;
