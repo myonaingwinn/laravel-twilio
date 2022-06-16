@@ -26,16 +26,33 @@ class RoomController extends Controller
         $twilio = new Client($this->sid, $this->authToken);
 
         try {
-            $twilio->video->v1->rooms->create([
-                "uniqueName" => $request->room,
-                "type" => (empty($request->roomType)) ? 'group' : $request->roomType,
-                "MaxParticipants" => (empty($request->maxParticipants)) ? '50' : $request->maxParticipants,
-                "statusCallback" => (empty($request->description)) ? 'null' : $request->description,
-                "emptyRoomTimeout" => (empty($request->emptyRoomTimeout)) ? '1' : $request->emptyRoomTimeout,
-            ]);
+            if ($request->roomType == "peer-to-peer") {
+                if ($request->maxParticipants > 10) {
+                    echo "Max Participant number cannot be grater than 10 in Peer-to-Peer Room Type";
+                } else {
+                    $twilio->video->v1->rooms->create([
+                        "uniqueName" => $request->room,
+                        "type" => (empty($request->roomType)) ? 'group' : $request->roomType,
+                        "MaxParticipants" => (empty($request->maxParticipants)) ? '50' : $request->maxParticipants,
+                        "statusCallback" => (empty($request->description)) ? 'null' : $request->description,
+                        "emptyRoomTimeout" => (empty($request->emptyRoomTimeout)) ? '1' : $request->emptyRoomTimeout,
+                    ]);
+                    echo "Room Created with peer-to-peer type";
+                }
+            } else {
+                $twilio->video->v1->rooms->create([
+                    "uniqueName" => $request->room,
+                    "type" => (empty($request->roomType)) ? 'group' : $request->roomType,
+                    "MaxParticipants" => (empty($request->maxParticipants)) ? '50' : $request->maxParticipants,
+                    "statusCallback" => (empty($request->description)) ? 'null' : $request->description,
+                    "emptyRoomTimeout" => (empty($request->emptyRoomTimeout)) ? '1' : $request->emptyRoomTimeout,
+                ]);
+                echo "Room Created with group type!";
+            }
         } catch (\Exception $e) {
-            echo $e->getMessage();
+            return $e->getMessage();
         }
+
         $identity = $request->identity;
         $token = new AccessToken(
             $this->sid,
