@@ -37,7 +37,7 @@ class RoomController extends Controller
         $grant->setRoom($request->room);
         $token->addGrant($grant);
 
-        return ['token' => $token->toJWT()];
+        return response()->json(['token' => $token->toJWT()], 200);
     }
 
     public function createRoom(CreateRoomRequest $request)
@@ -69,7 +69,7 @@ class RoomController extends Controller
                 echo "Room Created with group type!";
             }
         } catch (\Exception $e) {
-            echo $e->getMessage();
+            return response()->json($e->getMessage(), 400);
         }
 
         $identity = $request->identity;
@@ -85,7 +85,7 @@ class RoomController extends Controller
         $grant->setRoom($request->room);
         $token->addGrant($grant);
 
-        return ['token' => $token->toJWT()];
+        return response()->json(['token' => $token->toJWT()], 200);
     }
 
     public function getRoomList()
