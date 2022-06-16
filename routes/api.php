@@ -27,7 +27,7 @@ Route::prefix('v1')->group(function () {
 
     Route::post('token', [RoomController::class, 'getToken']);
 
-    Route::post('/createRoom', [RoomController::class, 'createRoom']);
+    Route::post('/create_room', [RoomController::class, 'createRoom']);
 
     Route::post('/register', [UserController::class, 'register']);
 
