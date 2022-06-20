@@ -1,22 +1,33 @@
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
-import {
-    baseUrl,
-    isLoggedIn,
-    localStorageRemove,
-    localStorageSet,
-} from "../../Utilities";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { baseUrl } from "../../Utilities";
 
-const Login = ({ handleLoading }) => {
+export const Register = () => {
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [connecting, setConnecting] = useState(false);
-    let navigator = useNavigate();
 
-    useEffect(() => {
-        if (isLoggedIn()) return navigator("/");
-    });
+    const handleSubmit = async () => {
+        await fetch(baseUrl + "/register", {
+            method: "POST",
+            body: JSON.stringify({
+                name,
+                email,
+                password,
+            }),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }).then((res) => {
+            console.log(res);
+            return res;
+        });
+    };
+
+    const handleNameChange = (e) => {
+        setName(e.target.value);
+    };
 
     const handleEmailChange = (e) => {
         setEmail(e.target.value);
@@ -26,36 +37,25 @@ const Login = ({ handleLoading }) => {
         setPassword(e.target.value);
     };
 
-    const handleSubmit = async () => {
-        setConnecting(true);
-        handleLoading();
-        const data = await fetch(baseUrl + "/login", {
-            method: "POST",
-            body: JSON.stringify({
-                email: email,
-                password: password,
-            }),
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then((res) => res.json())
-            .catch((err) => console.log(err));
-
-        data.id ? localStorageSet("user", data) : localStorageRemove("user");
-
-        setConnecting(false);
-        handleLoading();
-    };
-
     return (
         <Row className="d-flex justify-content-center mt-5">
             <Col lg={5}>
                 <Card className="mt-5 shadow-sm">
                     <Card.Header>
-                        <p className="h2">Login</p>
+                        <p className="h2">Register</p>
                     </Card.Header>
                     <Card.Body>
+                        <Form.Group className="mb-3">
+                            <Form.Label htmlFor="name">Name</Form.Label>
+                            <Form.Control
+                                type="text"
+                                id="name"
+                                value={name}
+                                onChange={handleNameChange}
+                                placeholder="Enter your Name"
+                                required
+                            />
+                        </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label htmlFor="email">Email</Form.Label>
                             <Form.Control
@@ -63,7 +63,6 @@ const Login = ({ handleLoading }) => {
                                 id="email"
                                 value={email}
                                 onChange={handleEmailChange}
-                                readOnly={connecting}
                                 placeholder="Enter your email"
                                 required
                             />
@@ -75,7 +74,6 @@ const Login = ({ handleLoading }) => {
                                 id="password"
                                 value={password}
                                 onChange={handlePasswordChange}
-                                readOnly={connecting}
                                 placeholder="Enter your password"
                                 required
                             />
@@ -86,15 +84,16 @@ const Login = ({ handleLoading }) => {
                             type="submit"
                             onClick={handleSubmit}
                             className="btn btn-primary"
-                            disabled={connecting || !(email && password)}
                         >
-                            Login
+                            Register
                         </Button>
                     </Card.Footer>
                 </Card>
+                <div className="mt-5">
+                    Already a user? <Link to="/login">Login</Link>
+                </div>
             </Col>
         </Row>
     );
 };
-
-export default Login;
+export default Register;

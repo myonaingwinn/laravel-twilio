@@ -1,9 +1,10 @@
 import { useState, useCallback, useEffect } from "react";
 import Video from "twilio-video";
+import { baseUrl } from "../../Utilities";
 import JoinRoom from "./JoinRoom";
 import Room from "./Room";
 
-const VideoChat = () => {
+const VideoChat = ({ handleLoading }) => {
     const [username, setUsername] = useState("");
     const [roomName, setRoomName] = useState("");
     const [room, setRoom] = useState(null);
@@ -21,7 +22,8 @@ const VideoChat = () => {
         async (event) => {
             event.preventDefault();
             setConnecting(true);
-            const data = await fetch("http://127.0.0.1:8000/api/v1/token", {
+            handleLoading();
+            const data = await fetch(baseUrl + "/token", {
                 method: "POST",
                 body: JSON.stringify({
                     identity: username,
@@ -36,14 +38,16 @@ const VideoChat = () => {
             })
                 .then((room) => {
                     setConnecting(false);
+                    handleLoading();
                     setRoom(room);
                 })
                 .catch((err) => {
                     console.error(err);
                     setConnecting(false);
+                    handleLoading();
                 });
         },
-        [roomName, username]
+        [roomName, username, handleLoading]
     );
 
     const handleLeave = useCallback(() => {
@@ -87,10 +91,10 @@ const VideoChat = () => {
             <JoinRoom
                 username={username}
                 roomName={roomName}
+                connecting={connecting}
                 handleUsernameChange={handleUsernameChange}
                 handleRoomNameChange={handleRoomNameChange}
                 handleSubmit={handleSubmit}
-                connecting={connecting}
             />
         );
     }

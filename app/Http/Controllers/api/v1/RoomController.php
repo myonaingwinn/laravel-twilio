@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\api\v1;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Twilio\Jwt\AccessToken;
 use Twilio\Jwt\Grants\VideoGrant;
-use Illuminate\Support\Facades\Validator;
 use Twilio\Rest\Client;
-use App\Http\Controllers\api\v1\CustomObject\RoomData;
+use App\Models\Room\RoomList;
+use App\Http\Requests\TokenRequest;
+use App\Http\Requests\TokenRequest as CreateRoomRequest;
 
 class RoomController extends Controller
 {
@@ -22,23 +22,55 @@ class RoomController extends Controller
         $this->apiSecret = config('services.twilio.api_secret');
     }
 
-    public function getToken(Request $request)
+    public function getToken(TokenRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'room' => 'required|max:255',
-            'identity' => 'required|max:255',
+        $identity = $request->identity;
+        $token = new AccessToken(
+            $this->sid,
+            $this->apiKey,
+            $this->apiSecret,
+            3600,
+            $identity
+        );
 
-        ]);
+        $grant = new VideoGrant();
+        $grant->setRoom($request->room);
+        $token->addGrant($grant);
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
+        return response()->json(['token' => $token->toJWT()], 200);
+    }
 
+    public function createRoom(CreateRoomRequest $request)
+    {
         $twilio = new Client($this->sid, $this->authToken);
 
-        $twilio->video->v1->rooms->create([
-            "uniqueName" => $request->room,
-        ]);
+        try {
+            if ($request->roomType == "peer-to-peer") {
+                if ($request->maxParticipants > 10) {
+                    return response()->json('Max Participant number cannot be grater than 10 in Peer-to-Peer Room Type', 400);
+                } else {
+                    $twilio->video->v1->rooms->create([
+                        "uniqueName" => $request->room,
+                        "type" => (empty($request->roomType)) ? 'group' : $request->roomType,
+                        "MaxParticipants" => (empty($request->maxParticipants)) ? '50' : $request->maxParticipants,
+                        "statusCallback" => (empty($request->description)) ? 'null' : $request->description,
+                        "emptyRoomTimeout" => (empty($request->emptyRoomTimeout)) ? '1' : $request->emptyRoomTimeout,
+                    ]);
+                    echo "Room Created with peer-to-peer type";
+                }
+            } else {
+                $twilio->video->v1->rooms->create([
+                    "uniqueName" => $request->room,
+                    "type" => (empty($request->roomType)) ? 'group' : $request->roomType,
+                    "MaxParticipants" => (empty($request->maxParticipants)) ? '50' : $request->maxParticipants,
+                    "statusCallback" => (empty($request->description)) ? 'null' : $request->description,
+                    "emptyRoomTimeout" => (empty($request->emptyRoomTimeout)) ? '1' : $request->emptyRoomTimeout,
+                ]);
+                echo "Room Created with group type!";
+            }
+        } catch (\Exception $e) {
+            return response()->json($e->getMessage(), 400);
+        }
 
         $identity = $request->identity;
         $token = new AccessToken(
@@ -53,16 +85,16 @@ class RoomController extends Controller
         $grant->setRoom($request->room);
         $token->addGrant($grant);
 
-        return ['token' => $token->toJWT()];
+        return response()->json(['token' => $token->toJWT()], 200);
     }
 
     public function getRoomList()
     {
         $twilio = new Client($this->sid, $this->authToken);
 
-        $obj = new RoomData();
-        $rooms_arr = $obj->getRoomData($twilio);
+        $obj = new RoomList();
+        $roomList = $obj->getRoomData($twilio);
 
-        return response()->json(["Room Data" => $rooms_arr], 200);
+        return response()->json(["roomList" => $roomList], 200);
     }
 }
