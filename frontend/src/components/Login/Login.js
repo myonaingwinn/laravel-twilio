@@ -1,19 +1,22 @@
-import { useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
-import { baseUrl } from "../../Utilities";
-import Notification from "../Notification/Notification";
+import {
+    baseUrl,
+    isLoggedIn,
+    localStorageRemove,
+    localStorageSet,
+} from "../../Utilities";
+import { useNavigate } from "react-router-dom";
 
-const Login = ({ handleLogin, handleLoading }) => {
+const Login = ({ handleLoading }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [connecting, setConnecting] = useState(false);
-    const notiRef = useRef();
-    const [successOrError, setSuccessOrError] = useState(false);
-    const [msgBody, setMsgBody] = useState(null);
+    let navigator = useNavigate();
 
-    const handleShowMsg = () => {
-        if (notiRef.current) notiRef.current.handleShowMsg();
-    };
+    useEffect(() => {
+        if (isLoggedIn()) return navigator("/");
+    });
 
     const handleEmailChange = (e) => {
         setEmail(e.target.value);
@@ -26,7 +29,7 @@ const Login = ({ handleLogin, handleLoading }) => {
     const handleSubmit = async () => {
         setConnecting(true);
         handleLoading();
-        const body = await fetch(baseUrl + "/login", {
+        const data = await fetch(baseUrl + "/login", {
             method: "POST",
             body: JSON.stringify({
                 email: email,
@@ -36,34 +39,17 @@ const Login = ({ handleLogin, handleLoading }) => {
                 "Content-Type": "application/json",
             },
         })
-            .then((res) => {
-                res.ok === true
-                    ? localStorage.setItem("isLoggedIn", true)
-                    : localStorage.removeItem("isLoggedIn");
-
-                setSuccessOrError(res.ok);
-                handleLogin();
-                return res.json();
-            })
+            .then((res) => res.json())
             .catch((err) => console.log(err));
 
-        if (typeof body === typeof {}) {
-            if (body.errors) setMsgBody(body.errors.email[0]);
-        } else setMsgBody(body);
+        data.id ? localStorageSet("user", data) : localStorageRemove("user");
 
         setConnecting(false);
         handleLoading();
-        handleShowMsg();
     };
 
     return (
         <Row className="d-flex justify-content-center mt-5">
-            <Notification
-                ref={notiRef}
-                successOrError={successOrError}
-                title={successOrError ? "Success" : "Error"}
-                body={msgBody}
-            />
             <Col lg={5}>
                 <Card className="mt-5 shadow-sm">
                     <Card.Header>

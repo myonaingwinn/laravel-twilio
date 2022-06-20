@@ -17,9 +17,7 @@ class UserController extends Controller
         $user = User::where('email', $credentials['email'])->first();
 
         if (Auth::attempt($credentials)) {
-            return response()->json([
-                "user" => $user,
-            ], 200);
+            return response()->json($user, 200);
         } else {
             return response()->json('Invalid email or password', 400);
         }
