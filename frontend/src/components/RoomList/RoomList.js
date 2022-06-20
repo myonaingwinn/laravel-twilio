@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, Col, Row, Button } from "react-bootstrap";
+import { Card, Col, Row, Button} from "react-bootstrap";
 import "./paginate.css";
 import ReactPaginate from "react-paginate";
 
@@ -18,7 +18,7 @@ class RoomList extends Component {
             message: '',
         };
     }
-
+    
     componentDidMount() {
         fetch("http://localhost:8000/api/v1/get_room_list")
             .then((response) => response.json())
@@ -40,26 +40,35 @@ class RoomList extends Component {
         this.setState({ page });
     };
 
+    handleSubmit=(event)=>{
+        event.preventDefault();
+        console.log("success")
+     }
 
     
 
     render() {
         const { page, perPage, pages } = this.state;
- 
+      
         console.warn(this.state)
      
         let items = this.state.roomList.slice(
             page * perPage,
             (page + 1) * perPage
         );
-       
-
+        
+        
+    
         return (
+            <form onSubmit={this.handleSubmit}>
             <div>
                 <div className="mt-4 mb-4" style={{ textAlign: "center" }}>
                     <h1>All Rooms</h1>
                 </div>
-                
+               
+                {/* <Button variant="outline-primary" onClick={create_room} >Create Room</Button><br/> */}
+                <input type="submit" className=" btn btn-primary" value="Create Room"/><br/>
+               
                 <br/>
                 <Row xs={1} md={3} className="g-4">
                     {items.map((value, i) => {
@@ -152,6 +161,7 @@ class RoomList extends Component {
                     </div>
                 </Row>
             </div>
+            </form>
         );
     }
 }
