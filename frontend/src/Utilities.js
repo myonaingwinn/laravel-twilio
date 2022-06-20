@@ -22,3 +22,9 @@ export const localStorageGet = (key) => {
 export const localStorageRemove = (key) => {
     localStorage.removeItem(key);
 };
+
+// authentication
+export const isLoggedIn = () => {
+    const user = localStorageGet("user");
+    return user && user.id ? true : false;
+};
