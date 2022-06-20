@@ -6,7 +6,7 @@ import Loading from "./components/Loading/Loading";
 import Error from "./components/Error/404";
 import Register from "./components/Login/Register";
 import PrivateRoute from "./helpers/PrivateRoute";
-import Home from "./components/Home/Home";
+import RoomList from "./components/RoomList/RoomList";
 
 function App() {
     const loadingRef = useRef();
@@ -22,7 +22,9 @@ function App() {
                     path={"/"}
                     element={
                         <PrivateRoute>
-                            <Home />
+                            <RoomList
+                                handleLoading={() => loadingRef.handleLoading}
+                            />
                         </PrivateRoute>
                     }
                 />
