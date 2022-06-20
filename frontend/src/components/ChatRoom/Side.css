@@ -1,0 +1,57 @@
+.Sidebar {
+    position: fixed;
+    right: 10px;
+    bottom: 80px;
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    height: 60%;
+    color: rgb(15, 16, 16);
+    border: 1px solid rgb(15, 14, 14);
+    border-radius: 5px;
+    padding: 0%;
+}
+
+.messageLeft {
+    border-radius: 0px 6px 6px 0px;
+    margin-left: 5px;
+}
+
+.messageRight {
+    margin-right: 5px;
+    text-align: right;
+}
+
+input {
+    width: 248px;
+}
+
+.sendBtn {
+    text-align: right;
+    width: 50px;
+}
+
+.TextList {
+    height: 450px;
+    overflow-y: scroll;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

@@ -4,10 +4,12 @@ namespace App\Http\Controllers\api\v1;
 
 use App\Http\Controllers\Controller;
 use Twilio\Jwt\AccessToken;
+use Twilio\Jwt\Grants\ChatGrant;
 use Twilio\Jwt\Grants\VideoGrant;
 use Twilio\Rest\Client;
 use App\Models\Room\RoomList;
 use App\Http\Requests\TokenRequest;
+use Illuminate\Http\Request;
 use App\Http\Requests\TokenRequest as CreateRoomRequest;
 
 class RoomController extends Controller
@@ -96,5 +98,27 @@ class RoomController extends Controller
         $roomList = $obj->getRoomData($twilio);
 
         return response()->json(["roomList" => $roomList], 200);
+    }
+    public function chat(Request $request)
+    {
+        $serviceSid = 'ISa41d3d8e7e4946f4b52b66220cd458ff';
+        $identity = $request->identity;
+
+        $token = new AccessToken(
+            $this->sid,
+            $this->apiKey,
+            $this->apiSecret,
+            3600,
+            $identity
+        );
+
+        $chatGrant = new ChatGrant();
+        $chatGrant->setServiceSid($serviceSid);
+
+        // Add grant to token
+        $token->addGrant($chatGrant);
+
+        // render token to string
+        return ['identity' => $identity, 'token' => $token->toJWT()];
     }
 }
