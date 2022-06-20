@@ -1,14 +1,10 @@
 import React, { Component } from "react";
 import { Card, Col, Row, Button } from "react-bootstrap";
-// import Card from "react-bootstrap/Card";
 import "./paginate.css";
-// import { Button } from "react-bootstrap";
-// import "bootstrap/dist/css/bootstrap.min.css";
-// import Col from "react-bootstrap/Col";
-// import Row from "react-bootstrap/Row";
 import ReactPaginate from "react-paginate";
 
 class RoomList extends Component {
+    
     constructor(props) {
         super(props);
 
@@ -17,36 +13,54 @@ class RoomList extends Component {
             perPage: 6,
             page: 0,
             pages: 0,
+            results: {},
+            loading: false,
+            message: '',
         };
-   
-}
+    }
 
-componentDidMount() {
+    componentDidMount() {
         fetch("http://localhost:8000/api/v1/get_room_list")
             .then((response) => response.json())
             .then((res) => {
                 console.log(res["Room Data"]["Room List"]);
                 this.setState({ roomList: res["Room Data"]["Room List"] });
+                this.setState({
+                    pages: Math.floor(
+                        this.state.roomList.length / this.state.perPage
+                    ),
+                });
             })
             .catch((err) => console.log(err));
+    }
+
+
+    handlePageClick = (event) => {
+        let page = event.selected;
+        this.setState({ page });
     };
+
 
     
 
     render() {
         const { page, perPage, pages } = this.state;
-         let items = this.state.roomList.slice(page*  perPage, (page + 1) * perPage);
-
-        
+ 
+        console.warn(this.state)
+     
+        let items = this.state.roomList.slice(
+            page * perPage,
+            (page + 1) * perPage
+        );
+       
 
         return (
-            // <Container fluid>
-
             <div>
-                <div className="mt-5 mb-5" style={{ textAlign: "center" }}>
+                <div className="mt-4 mb-4" style={{ textAlign: "center" }}>
                     <h1>All Rooms</h1>
-                  
                 </div>
+                
+                <br/>
                 <Row xs={1} md={3} className="g-4">
                     {items.map((value, i) => {
                         return (
@@ -110,7 +124,6 @@ componentDidMount() {
                                                     <i className="fa fa-map-marker-alt main-theme-color" />
                                                     <i className="fa fa-map-marker" />{" "}
                                                     Description&nbsp;:&nbsp;
-                                                    
                                                 </Card.Text>
                                             </div>
                                             <br />
@@ -139,8 +152,6 @@ componentDidMount() {
                     </div>
                 </Row>
             </div>
-
-            // </Container>
         );
     }
 }
