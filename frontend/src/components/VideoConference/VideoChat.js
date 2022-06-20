@@ -4,11 +4,12 @@ import { baseUrl } from "../../Utilities";
 import JoinRoom from "./JoinRoom";
 import Room from "./Room";
 
-const VideoChat = ({ handleLoading }) => {
+const VideoChat = () => {
     const [username, setUsername] = useState("");
     const [roomName, setRoomName] = useState("");
     const [room, setRoom] = useState(null);
     const [connecting, setConnecting] = useState(false);
+    const [validated, setValidated] = useState(false);
 
     const handleUsernameChange = useCallback((event) => {
         setUsername(event.target.value);
@@ -21,8 +22,13 @@ const VideoChat = ({ handleLoading }) => {
     const handleSubmit = useCallback(
         async (event) => {
             event.preventDefault();
+            const form = event.currentTarget;
+            if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            setValidated(true);
             setConnecting(true);
-            handleLoading();
             const data = await fetch(baseUrl + "/token", {
                 method: "POST",
                 body: JSON.stringify({
@@ -38,16 +44,14 @@ const VideoChat = ({ handleLoading }) => {
             })
                 .then((room) => {
                     setConnecting(false);
-                    handleLoading();
                     setRoom(room);
                 })
                 .catch((err) => {
                     console.error(err);
                     setConnecting(false);
-                    handleLoading();
                 });
         },
-        [roomName, username, handleLoading]
+        [roomName, username]
     );
 
     const handleLeave = useCallback(() => {
@@ -91,10 +95,11 @@ const VideoChat = ({ handleLoading }) => {
             <JoinRoom
                 username={username}
                 roomName={roomName}
-                connecting={connecting}
                 handleUsernameChange={handleUsernameChange}
                 handleRoomNameChange={handleRoomNameChange}
                 handleSubmit={handleSubmit}
+                connecting={connecting}
+                validated={validated}
             />
         );
     }
