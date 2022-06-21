@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { Card, Col, Row, Button, Container } from "react-bootstrap";
+import { Card, Col, Row, Container } from "react-bootstrap";
 import "./paginate.css";
 import ReactPaginate from "react-paginate";
 import { Link } from "react-router-dom";
-import { baseUrl } from "../../Utilities";
+import { baseUrl, localStorageSet } from "../../Utilities";
 import Navbar from "../Navbar/NavbarTop";
 
 class RoomList extends Component {
@@ -38,6 +38,10 @@ class RoomList extends Component {
     handlePageClick = (event) => {
         let page = event.selected;
         this.setState({ page });
+    };
+
+    handleJoin = (e) => {
+        localStorageSet("uniqueName", e.target.id);
     };
 
     render() {
@@ -79,9 +83,16 @@ class RoomList extends Component {
                                                         {value.description}
                                                     </Card.Text>
 
-                                                    <Button className="btn btn-primary">
+                                                    <Link
+                                                        id={value.name}
+                                                        to="/conference"
+                                                        onClick={
+                                                            this.handleJoin
+                                                        }
+                                                        className="btn btn-primary"
+                                                    >
                                                         Join
-                                                    </Button>
+                                                    </Link>
                                                 </Card.Body>
                                             </Card>
                                         </Col>
@@ -102,7 +113,11 @@ class RoomList extends Component {
                                 </div>
                             </Row>
                         </Row>
-                    ) : null}
+                    ) : (
+                        <div style={{ textAlign: "center" }}>
+                            <p className="h2">There is no active room</p>
+                        </div>
+                    )}
                 </Container>
             </>
         );
