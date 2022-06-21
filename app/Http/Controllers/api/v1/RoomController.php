@@ -51,12 +51,12 @@ class RoomController extends Controller
                 } else {
                     $twilio->video->v1->rooms->create([
                         "uniqueName" => $request->room,
-                        "type" => (empty($request->roomType)) ? 'group' : $request->roomType,
-                        "MaxParticipants" => (empty($request->maxParticipants)) ? '50' : $request->maxParticipants,
+                        "type" => $request->roomType,
+                        "MaxParticipants" => (empty($request->maxParticipants)) ? '10' : $request->maxParticipants,
                         "statusCallback" => (empty($request->description)) ? 'null' : $request->description,
                         "emptyRoomTimeout" => (empty($request->emptyRoomTimeout)) ? '1' : $request->emptyRoomTimeout,
                     ]);
-                    echo "Room Created with peer-to-peer type";
+                    // echo "Room Created with peer-to-peer type";
                 }
             } else {
                 $twilio->video->v1->rooms->create([
@@ -66,7 +66,7 @@ class RoomController extends Controller
                     "statusCallback" => (empty($request->description)) ? 'null' : $request->description,
                     "emptyRoomTimeout" => (empty($request->emptyRoomTimeout)) ? '1' : $request->emptyRoomTimeout,
                 ]);
-                echo "Room Created with group type!";
+                // echo "Room Created with group type!";
             }
         } catch (\Exception $e) {
             return response()->json($e->getMessage(), 400);
