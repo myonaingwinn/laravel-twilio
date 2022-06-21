@@ -3,17 +3,17 @@ import React from "react";
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
-import "./Side.css";
+import "./SlideX.css";
 
 const TwilioChat = require("twilio-chat");
 
-class ChatUI extends React.Component {
+class ChatUX extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             token: "",
             inputValue: "",
-            name: "Hello",
+            name: "Hello1",
             identity: "",
             chatClient: "",
             generalChannel: "",
@@ -94,9 +94,9 @@ class ChatUI extends React.Component {
                     });
             });
     }
-    async setupChannel() {
+    setupChannel() {
         var one = this;
-        await this.state.generalChannel.on("channelJoined", function (channel) {
+        this.state.generalChannel.on("channelJoined", function (channel) {
             console.log("You Join Channel. ");
         });
 
@@ -134,7 +134,7 @@ class ChatUI extends React.Component {
                     position: "fixed",
                     display: "flex",
                     right: "10px",
-                    bottom: "75px",
+                    bottom: "10px",
                 }}
             >
                 <Card.Body>
@@ -153,7 +153,7 @@ class ChatUI extends React.Component {
                         placeholder="Type messages"
                         onKeyPress={this.onKeyUp}
                     />
-                    <Button variant="primary" onClick={this.sendMessage}>
+                    <Button variant="info" onClick={this.sendMessage}>
                         Send
                     </Button>
                 </InputGroup>
@@ -162,4 +162,4 @@ class ChatUI extends React.Component {
     }
 }
 
-export default ChatUI;
+export default ChatUX;

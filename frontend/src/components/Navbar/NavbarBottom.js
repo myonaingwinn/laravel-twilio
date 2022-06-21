@@ -16,7 +16,13 @@ const Nvbar = ({ roomName, room, handleLeave }) => {
             >
                 <Container fluid>
                     <Navbar.Brand>Room : {roomName}</Navbar.Brand>
-                    <Button onClick={clickEventFunction}>Chat</Button>
+                    <Button
+                        variant="white"
+                        className="btn btn-outline-secondary"
+                        onClick={clickEventFunction}
+                    >
+                        Chat
+                    </Button>
                     <Nav>
                         {/* <Nav.Link href="#features">Features</Nav.Link> */}
                         {room && (

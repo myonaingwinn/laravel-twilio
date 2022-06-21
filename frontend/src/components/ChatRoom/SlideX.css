@@ -1,6 +1,6 @@
 .TextList {
     height: 328px;
-    overflow-y: scroll;
+    /* overflow-y: scroll; */
 }
 
 /* width */
