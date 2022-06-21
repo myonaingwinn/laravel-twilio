@@ -23,7 +23,7 @@ const JoinRoom = ({
                                 id="field"
                                 value={username}
                                 onChange={handleUsernameChange}
-                                readOnly={connecting}
+                                readOnly={username}
                                 placeholder="Enter your name"
                                 required
                             />
@@ -35,7 +35,7 @@ const JoinRoom = ({
                                 id="room"
                                 value={roomName}
                                 onChange={handleRoomNameChange}
-                                readOnly={connecting}
+                                readOnly={roomName}
                                 placeholder="Enter room name"
                                 required
                             />

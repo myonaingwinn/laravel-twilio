@@ -1,14 +1,18 @@
 import { useState, useCallback, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Video from "twilio-video";
-import { baseUrl } from "../../Utilities";
+import { baseUrl, localStorageGet } from "../../Utilities";
 import JoinRoom from "./JoinRoom";
 import Room from "./Room";
 
 const VideoChat = ({ handleLoading }) => {
-    const [username, setUsername] = useState("");
-    const [roomName, setRoomName] = useState("");
+    const { name } = localStorageGet("user");
+    const [username, setUsername] = useState(name);
+    const uniqueName = localStorageGet("uniqueName");
+    const [roomName, setRoomName] = useState(uniqueName);
     const [room, setRoom] = useState(null);
     const [connecting, setConnecting] = useState(false);
+    const navigator = useNavigate();
 
     const handleUsernameChange = useCallback((event) => {
         setUsername(event.target.value);
@@ -60,6 +64,7 @@ const VideoChat = ({ handleLoading }) => {
             }
             return null;
         });
+        navigator("/");
     }, []);
 
     useEffect(() => {

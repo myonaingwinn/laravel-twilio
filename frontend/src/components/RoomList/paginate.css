@@ -1,0 +1,67 @@
+.pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    font-size: 12px;
+}
+
+.pagination a {
+    cursor: default;
+    padding: 7px;
+    border-radius: 6px;
+    border: 1px solid blue;
+    color: blue;
+    margin-left: 10px;
+}
+
+.pagination li:not(.disabled) a:hover {
+    cursor: pointer;
+}
+
+.pagination li a {
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.pagination li.active a {
+    color: rgb(10, 3, 70);
+    background-color: rgb(36, 140, 238);
+}
+
+.pagination li.disabled a {
+    pointer-events: none;
+    color: rgb(198, 197, 202);
+    border: 1px solid rgb(198, 197, 202);
+}
+
+.pagination-txt {
+    display: inline;
+    font-size: 12px;
+}
+
+.Search {
+    width: 400px;
+    margin: 0 auto;
+    position: relative;
+    display: flex;
+}
+
+.SearchSpan {
+    width: 15%;
+    border: 1px solid #1c76d2;
+    background: #1c76d2;
+    padding-top: 4px;
+    text-align: center;
+    color: #fff;
+    border-radius: 5px 0 0 5px;
+    font-size: 20px;
+}
+
+.SearchInput {
+    width: 85%;
+    border: 3px solid #1c76d2;
+    border-left: none;
+    padding: 5px;
+    border-radius: 0 5px 5px 0;
+    outline: none;
+}
