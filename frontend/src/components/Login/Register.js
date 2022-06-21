@@ -56,7 +56,7 @@ export const Register = () => {
                                 id="name"
                                 value={name}
                                 onChange={handleNameChange}
-                                placeholder="Enter your Name"
+                                placeholder="Enter your name"
                                 required
                             />
                         </Form.Group>
