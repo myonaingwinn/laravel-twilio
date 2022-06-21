@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { Card, Col, Row, Button, Container } from "react-bootstrap";
 import "./paginate.css";
 import ReactPaginate from "react-paginate";
+import { Link } from "react-router-dom";
+import { baseUrl } from "../../Utilities";
+import Navbar from "../Navbar/NavbarTop";
 
 class RoomList extends Component {
     constructor(props) {
@@ -12,18 +15,16 @@ class RoomList extends Component {
             perPage: 6,
             page: 0,
             pages: 0,
-            results: {},
-            loading: false,
-            message: "",
         };
     }
 
     componentDidMount() {
-        fetch("http://localhost:8000/api/v1/get_room_list")
+        this.props.handleLoading();
+        fetch(baseUrl + "/get_room_list")
             .then((response) => response.json())
             .then((res) => {
-                console.log(res["Room Data"]["Room List"]);
-                this.setState({ roomList: res["Room Data"]["Room List"] });
+                // console.log(res["roomList"]);
+                this.setState({ roomList: res["roomList"] });
                 this.setState({
                     pages: Math.floor(
                         this.state.roomList.length / this.state.perPage
@@ -31,6 +32,7 @@ class RoomList extends Component {
                 });
             })
             .catch((err) => console.log(err));
+        this.props.handleLoading();
     }
 
     handlePageClick = (event) => {
@@ -38,15 +40,10 @@ class RoomList extends Component {
         this.setState({ page });
     };
 
-    handleSubmit = (event) => {
-        event.preventDefault();
-        console.log("success");
-    };
-
     render() {
         const { page, perPage, pages } = this.state;
 
-        console.warn(this.state);
+        // console.log(this.state);
 
         let items = this.state.roomList.slice(
             page * perPage,
@@ -54,125 +51,60 @@ class RoomList extends Component {
         );
 
         return (
-            <Container fluid>
-                <form onSubmit={this.handleSubmit}>
-                    <div>
-                        <div
-                            className="mt-4 mb-4"
-                            style={{ textAlign: "center" }}
+            <>
+                <Navbar handleLogout={this.props.handleLogout} />
+                <Container fluid className="mt-5">
+                    <p style={{ textAlign: "right" }}>
+                        <Link
+                            className="btn btn-primary mx-3"
+                            to="/create_room"
                         >
-                            <h1>All Rooms</h1>
-                        </div>
-
-                        {/* <Button variant="outline-primary" onClick={create_room} >Create Room</Button><br/> */}
-                        <input
-                            type="submit"
-                            className="btn btn-primary"
-                            value="Create Room"
-                        />
-                        <br />
-
-                        <br />
-                        <Row xs={1} md={3} className="g-4">
-                            {items.map((value, i) => {
-                                return (
-                                    <Col md={4} key={i}>
-                                        <Card
-                                            key={i}
-                                            className="op-widget-pd mb-2"
-                                        >
-                                            <div className="card-size">
-                                                <Card.Header className="tt-bg">
-                                                    <div className="row">
-                                                        <div className="col-8">
-                                                            <Card.Title
-                                                                id="jb-rlt"
-                                                                className="col-15 text-truncate"
-                                                            >
-                                                                <b>
-                                                                    {value.name}
-                                                                </b>
-                                                            </Card.Title>
-                                                        </div>
-                                                        <div className="col-1 offset-1 badge text-black text-center ">
-                                                            {(() => {
-                                                                if (
-                                                                    value.participant <
-                                                                    value.maxParticipant
-                                                                ) {
-                                                                    return (
-                                                                        <i
-                                                                            style={{
-                                                                                color: "green",
-                                                                            }}
-                                                                        >
-                                                                            {" "}
-                                                                            Available{" "}
-                                                                        </i>
-                                                                    );
-                                                                } else {
-                                                                    return (
-                                                                        <i
-                                                                            style={{
-                                                                                color: "red",
-                                                                            }}
-                                                                        >
-                                                                            {" "}
-                                                                            Not
-                                                                            Available
-                                                                        </i>
-                                                                    );
-                                                                }
-                                                            })()}
-                                                        </div>
-                                                    </div>
+                            Create Room
+                        </Link>
+                    </p>
+                    {this.state.roomList.length > 0 ? (
+                        <Row>
+                            <Row xs={1} md={3}>
+                                {items.map((value, i) => {
+                                    return (
+                                        <Col md={3} key={i}>
+                                            <Card key={i} className="my-2">
+                                                <Card.Header>
+                                                    <Card.Title>
+                                                        {value.name}
+                                                    </Card.Title>
                                                 </Card.Header>
                                                 <Card.Body>
-                                                    <div className="row text-start">
-                                                        <Card.Text className="col-8 pt-txt">
-                                                            <i className="fa fa-map-marker-alt main-theme-color" />
-                                                            <i className="fa fa-map-marker" />{" "}
-                                                            Members&nbsp;&nbsp;&nbsp;&nbsp;:&nbsp;
-                                                            {value.participant}/
-                                                            {
-                                                                value.maxParticipant
-                                                            }
-                                                        </Card.Text>
+                                                    <Card.Text>
+                                                        {value.description}
+                                                    </Card.Text>
 
-                                                        <Card.Text className="col-8 pt-txt">
-                                                            <i className="fa fa-map-marker-alt main-theme-color" />
-                                                            <i className="fa fa-map-marker" />{" "}
-                                                            Description&nbsp;:&nbsp;
-                                                        </Card.Text>
-                                                    </div>
-                                                    <br />
-
-                                                    <Button className="btn btn-sm">
+                                                    <Button className="btn btn-primary">
                                                         Join
                                                     </Button>
                                                 </Card.Body>
-                                            </div>
-                                        </Card>
-                                    </Col>
-                                );
-                            })}
-                        </Row>
+                                            </Card>
+                                        </Col>
+                                    );
+                                })}
+                            </Row>
 
-                        <Row style={{ marginTop: "20px" }}>
-                            <div className="float-end">
-                                <ReactPaginate
-                                    previousLabel={"<<"}
-                                    nextLabel={">>"}
-                                    pageCount={pages}
-                                    onPageChange={this.handlePageClick}
-                                    containerClassName={"pagination"}
-                                    activeClassName={"active"}
-                                />
-                            </div>
+                            <Row style={{ marginTop: "20px" }}>
+                                <div className="float-end">
+                                    <ReactPaginate
+                                        previousLabel={"<<"}
+                                        nextLabel={">>"}
+                                        pageCount={pages}
+                                        onPageChange={this.handlePageClick}
+                                        containerClassName={"pagination"}
+                                        activeClassName={"active"}
+                                    />
+                                </div>
+                            </Row>
                         </Row>
-                    </div>
-                </form>
-            </Container>
+                    ) : null}
+                </Container>
+            </>
         );
     }
 }

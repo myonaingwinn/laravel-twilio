@@ -33,7 +33,8 @@ function App() {
                     element={
                         <PrivateRoute>
                             <RoomList
-                                handleLoading={() => loadingRef.handleLoading}
+                                handleLoading={handleLoading}
+                                handleLogout={handleLogout}
                             />
                         </PrivateRoute>
                     }
