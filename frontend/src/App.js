@@ -17,9 +17,9 @@ function App() {
         if (loadingRef.current) loadingRef.current.handleLoading();
     };
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
         handleLoading();
-        localStorageRemove("user");
+        await localStorageRemove("user");
         navigator("login");
         handleLoading();
     };
@@ -49,7 +49,7 @@ function App() {
                 />
                 <Route
                     VideoChat
-                    path="/video-chat"
+                    path="/conference"
                     element={
                         <PrivateRoute>
                             <VideoChat
