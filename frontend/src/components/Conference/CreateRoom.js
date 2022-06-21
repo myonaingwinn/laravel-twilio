@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Button, Card, Col, Form, FormSelect, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { baseUrl, localStorageGet, RoomTypes } from "../../../Utilities";
-import Navbar from "../../Navbar/NavbarTop";
+import { baseUrl, localStorageGet, RoomTypes } from "../../Utilities";
+import Navbar from "../Navbar/NavbarTop";
 
 const CreateRoom = ({ handleLoading, handleLogout }) => {
     const [roomName, setRoomName] = useState("");
@@ -176,7 +176,7 @@ const CreateRoom = ({ handleLoading, handleLogout }) => {
                                 type="submit"
                                 onClick={handleSubmit}
                                 className="btn btn-primary"
-                                disabled={connecting} //|| !isReady
+                                disabled={connecting || !isReady}
                             >
                                 Create Room
                             </Button>

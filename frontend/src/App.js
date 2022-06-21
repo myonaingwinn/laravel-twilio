@@ -8,7 +8,7 @@ import Register from "./components/Login/Register";
 import PrivateRoute from "./helpers/PrivateRoute";
 import Home from "./components/Home/Home";
 import { localStorageRemove } from "./Utilities";
-import CreateRoom from "./components/Conference/Room/CreateRoom";
+import CreateRoom from "./components/Conference/CreateRoom";
 
 function App() {
     const loadingRef = useRef();
