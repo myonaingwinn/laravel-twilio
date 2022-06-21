@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Participant from "./Participant";
-import Navbar from "../Navbar/Navbar";
+import Navbar from "../Navbar/NavbarBottom";
 
 const Room = ({ roomName, room, handleLeave }) => {
     const [participants, setParticipants] = useState([]);
