@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Button, Card, Col, Form, Row } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { baseUrl } from "../../Utilities";
 
 export const Register = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigator = useNavigate();
 
     const handleSubmit = async () => {
         await fetch(baseUrl + "/register", {
@@ -19,10 +20,13 @@ export const Register = () => {
             headers: {
                 "Content-Type": "application/json",
             },
-        }).then((res) => {
-            console.log(res);
-            return res;
-        });
+        })
+            .then((res) => {
+                // console.log(res);
+                if (res.ok) navigator("/login");
+                return res;
+            })
+            .catch((err) => console.log(err));
     };
 
     const handleNameChange = (e) => {
@@ -90,7 +94,7 @@ export const Register = () => {
                     </Card.Footer>
                 </Card>
                 <div className="mt-5">
-                    Already a user? <Link to="/login">Login</Link>
+                    Already have an account? <Link to="/login">Login</Link>
                 </div>
             </Col>
         </Row>

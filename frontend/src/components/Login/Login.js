@@ -6,7 +6,7 @@ import {
     localStorageRemove,
     localStorageSet,
 } from "../../Utilities";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = ({ handleLoading }) => {
     const [email, setEmail] = useState("");
@@ -92,6 +92,10 @@ const Login = ({ handleLoading }) => {
                         </Button>
                     </Card.Footer>
                 </Card>
+                <div className="mt-5">
+                    Don't have an account?{" "}
+                    <Link to={"/register"}>Register</Link>
+                </div>
             </Col>
         </Row>
     );
