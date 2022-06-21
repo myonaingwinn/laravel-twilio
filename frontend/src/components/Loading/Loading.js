@@ -9,6 +9,7 @@ const Loading = forwardRef((props, ref) => {
             setIsLoading(!isLoading);
         },
     }));
+
     return (
         <>
             {isLoading && (
