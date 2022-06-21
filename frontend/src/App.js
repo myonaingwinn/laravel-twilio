@@ -1,18 +1,28 @@
-import VideoChat from "./components/VideoConference/VideoChat";
+import VideoChat from "./components/Conference/VideoChat";
 import Login from "./components/Login/Login";
 import { useRef } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Loading from "./components/Loading/Loading";
 import Error from "./components/Error/404";
 import Register from "./components/Login/Register";
 import PrivateRoute from "./helpers/PrivateRoute";
 import RoomList from "./components/RoomList/RoomList";
+import { localStorageRemove } from "./Utilities";
+import CreateRoom from "./components/Conference/CreateRoom";
 
 function App() {
     const loadingRef = useRef();
+    const navigator = useNavigate();
 
     const handleLoading = () => {
         if (loadingRef.current) loadingRef.current.handleLoading();
+    };
+
+    const handleLogout = async () => {
+        handleLoading();
+        await localStorageRemove("user");
+        navigator("login");
+        handleLoading();
     };
 
     return (
@@ -34,19 +44,27 @@ function App() {
                 />
                 <Route
                     path="/register"
-                    element={
-                        <Register
-                            handleLoading={() => loadingRef.handleLoading}
-                        />
-                    }
+                    element={<Register handleLoading={handleLoading} />}
                 />
                 <Route
                     VideoChat
-                    path="/video-chat"
+                    path="/conference"
                     element={
                         <PrivateRoute>
                             <VideoChat
-                                handleLoading={() => loadingRef.handleLoading}
+                                handleLoading={handleLoading}
+                                handleLogout={handleLogout}
+                            />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path={"/create_room"}
+                    element={
+                        <PrivateRoute>
+                            <CreateRoom
+                                handleLoading={handleLoading}
+                                handleLogout={handleLogout}
                             />
                         </PrivateRoute>
                     }

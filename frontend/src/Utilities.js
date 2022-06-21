@@ -28,3 +28,9 @@ export const isLoggedIn = () => {
     const user = localStorageGet("user");
     return user && user.id ? true : false;
 };
+
+// room types
+export const RoomTypes = {
+    Group: "group",
+    PeerToPeer: "peer-to-peer",
+};
