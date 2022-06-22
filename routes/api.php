@@ -24,6 +24,7 @@ Route::prefix('v1')->group(function () {
     Route::get('/test', function () {
         return "OK";
     });
+    Route::post('/chat', [RoomController::class, 'chat']);
 
     Route::post('token', [RoomController::class, 'getToken']);
 
