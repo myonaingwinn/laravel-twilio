@@ -24,7 +24,19 @@ const CreateRoom = ({ handleLoading, handleLogout }) => {
     };
 
     const handleMaxParticipantsChange = (e) => {
-        setMaxParticipants(e.target.value);
+        let result = e.target.value.replace(/\D/g, "");
+        if (result.length > 0) {
+            if (result >= 50 && roomType === RoomTypes.Group) result = 50;
+            else if (result <= 11 && roomType === RoomTypes.Group) result = 11;
+            else if (result >= 10 && roomType === RoomTypes.PeerToPeer)
+                result = 10;
+            else if (result >= 2 && roomType === RoomTypes.PeerToPeer)
+                result = 2;
+            setMaxParticipants(result);
+        } else {
+            if (roomType === RoomTypes.Group) setMaxParticipants(50);
+            else if (roomType === RoomTypes.PeerToPeer) setMaxParticipants(10);
+        }
     };
 
     const handleDescriptionChange = (e) => {
@@ -32,7 +44,12 @@ const CreateRoom = ({ handleLoading, handleLogout }) => {
     };
 
     const handleTimeoutChange = (e) => {
-        setTimeout(e.target.value);
+        let result = e.target.value.replace(/\D/g, "");
+        if (result.length > 0) {
+            if (result >= 60) setTimeout(60);
+            else if (result <= 1) setTimeout(1);
+            else if (result >= 1 && result <= 60) setTimeout(result);
+        } else setTimeout(60);
     };
 
     /*     const handleJoinChange = () => {
@@ -68,7 +85,8 @@ const CreateRoom = ({ handleLoading, handleLogout }) => {
 
     useEffect(() => {
         roomName && description ? setIsReady(true) : setIsReady(false);
-    }, [roomName, description, isReady]);
+        setMaxParticipants(roomType === RoomTypes.Group ? 50 : 10);
+    }, [roomName, description, isReady, roomType]);
 
     return (
         <>
@@ -136,10 +154,9 @@ const CreateRoom = ({ handleLoading, handleLogout }) => {
                                 <Form.Control
                                     id="maxParticipants"
                                     type="number"
-                                    value={
-                                        roomType === RoomTypes.Group ? 50 : 10
-                                    }
+                                    value={maxParticipants}
                                     max={roomType === RoomTypes.Group ? 50 : 10}
+                                    min={roomType === RoomTypes.Group ? 11 : 2}
                                     onChange={handleMaxParticipantsChange}
                                     readOnly={connecting}
                                     placeholder="Enter maximum participants"
@@ -155,6 +172,7 @@ const CreateRoom = ({ handleLoading, handleLogout }) => {
                                     type="number"
                                     value={`${timeout}`}
                                     min="1"
+                                    max="60"
                                     onChange={handleTimeoutChange}
                                     readOnly={connecting}
                                     placeholder="Enter timeout"
