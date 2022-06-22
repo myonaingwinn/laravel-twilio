@@ -30,7 +30,7 @@ const CreateRoom = ({ handleLoading, handleLogout }) => {
             else if (result <= 11 && roomType === RoomTypes.Group) result = 11;
             else if (result >= 10 && roomType === RoomTypes.PeerToPeer)
                 result = 10;
-            else if (result >= 2 && roomType === RoomTypes.PeerToPeer)
+            else if (result <= 2 && roomType === RoomTypes.PeerToPeer)
                 result = 2;
             setMaxParticipants(result);
         } else {
